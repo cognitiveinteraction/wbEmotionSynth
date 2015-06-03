@@ -18,11 +18,11 @@
 */
 
 /**
- * @file gazeTrackModule.cpp
+ * @file emotionSynthModule.cpp
  * @brief Implementation of the tutorialModule (see header file).
  */
 
-#include "iCub/gazeTrackModule.h"
+#include "iCub/emotionSynthModule.h"
 
 using namespace yarp::os;
 using namespace yarp::sig;
@@ -35,13 +35,13 @@ using namespace std;
  *  equivalent of the "open" method.
  */
 
-bool gazeTrackModule::configure(yarp::os::ResourceFinder &rf) {
+bool emotionSynthModule::configure(yarp::os::ResourceFinder &rf) {
     /* Process all parameters from both command-line and .ini file */
 
     /* get the module name which will form the stem of all module port names */
 
     moduleName            = rf.check("name", 
-                           Value("/gazeTracking"), 
+                           Value("/wbEmotionSynth"), 
                            "module name (string)").asString();
     /*
     * before continuing, set the module name before getting any other parameters, 
@@ -87,7 +87,7 @@ bool gazeTrackModule::configure(yarp::os::ResourceFinder &rf) {
     }
 	
     /* create the thread and pass pointers to the module parameters */
-    rThread = new gazeTrackRatethread(robotName, configFile);
+    rThread = new emotionSynthRatethread(robotName, configFile);
     rThread->setName(getName().c_str());
     //rThread->setInputPortName(inputPortName.c_str());
     
@@ -98,12 +98,12 @@ bool gazeTrackModule::configure(yarp::os::ResourceFinder &rf) {
                         // so that it will then run the module
 }
 
-bool gazeTrackModule::interruptModule() {
+bool emotionSynthModule::interruptModule() {
     handlerPort.interrupt();
     return true;
 }
 
-bool gazeTrackModule::close() {
+bool emotionSynthModule::close() {
     handlerPort.close();
     /* stop the thread */
     yDebug("stopping the thread \n");
@@ -111,7 +111,7 @@ bool gazeTrackModule::close() {
     return true;
 }
 
-bool gazeTrackModule::respond(const Bottle& command, Bottle& reply) 
+bool emotionSynthModule::respond(const Bottle& command, Bottle& reply) 
 {
     string helpMessage =  string(getName().c_str()) + 
                 " commands are: \n" +  
@@ -132,12 +132,12 @@ bool gazeTrackModule::respond(const Bottle& command, Bottle& reply)
 }
 
 /* Called periodically every getPeriod() seconds */
-bool gazeTrackModule::updateModule()
+bool emotionSynthModule::updateModule()
 {
     return true;
 }
 
-double gazeTrackModule::getPeriod()
+double emotionSynthModule::getPeriod()
 {
     /* module periodicity (seconds), called implicitly by myModule */
     return 1;

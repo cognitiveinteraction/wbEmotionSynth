@@ -19,29 +19,24 @@
   
 /**
  * @file main.cpp
- * @brief main code for the tutorial module.
+ * @brief main code for the emotional synthesiser
  */
 
-#include "iCub/gazeTrackModule.h"
-#include <dlib/gui_widgets.h>
-#include <dlib/image_io.h> 
-
-//#include <dlib/image_processing/frontal_face_detector.h>
+#include "iCub/emotionSynthModule.h"
 
 using namespace yarp::os;
 using namespace yarp::sig;
-//using namespace dlib;
 
 int main(int argc, char * argv[])
 {
     
     Network yarp;
-    gazeTrackModule module;
-    dlib::image_window win;
+    emotionSynthModule module;
+    
     ResourceFinder rf;
     rf.setVerbose(true);
-    rf.setDefaultConfigFile("gazeTracking.ini");    //overridden by --from parameter
-    rf.setDefaultContext("gazeTracking");           //overridden by --context parameter
+    rf.setDefaultConfigFile("wbEmotionSynth.ini");    //overridden by --from parameter
+    rf.setDefaultContext("wbEmotionSynth");           //overridden by --context parameter
     rf.configure("ICUB_ROOT", argc, argv);  
 
     module.runModule(rf);

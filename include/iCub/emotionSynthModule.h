@@ -18,12 +18,12 @@
 */
 
 /**
- * @file gazeTrackModule.h
+ * @file emotionSynthModule.h
  * @brief module that enables gaze tracking on the iCub
  */
 
-#ifndef _GAZE_TRACK_MODULE_H_
-#define _GAZE_TRACK_MODULE_H_
+#ifndef _EMOTION_SYNTH_MODULE_H_
+#define _EMOTION_SYNTH_MODULE_H_
 
 /** 
  *
@@ -145,9 +145,9 @@
 #include <yarp/os/Log.h>
 
 //within project includes  
-#include <iCub/gazeTrackRatethread.h>
+#include <iCub/emotionSynthRatethread.h>
 
-class gazeTrackModule:public yarp::os::RFModule {
+class emotionSynthModule:public yarp::os::RFModule {
     
     std::string moduleName;                  // name of the module
     std::string robotName;                   // name of the robot 
@@ -159,7 +159,7 @@ class gazeTrackModule:public yarp::os::RFModule {
     
     yarp::os::Port handlerPort;              // a port to handle messages 
     /*  */
-    gazeTrackRatethread *rThread;            // pointer to a new thread to be created and started in configure() and stopped in close()
+    emotionSynthRatethread *rThread;            // pointer to a new thread to be created and started in configure() and stopped in close()
 
 public:
     /**
@@ -199,7 +199,7 @@ public:
 };
 
 
-#endif // _TUTORIAL_MODULE_H__
+#endif // _EMOTION_SYNTH_H__
 
 //----- end-of-file --- ( next line intentionally left blank ) ------------------
 

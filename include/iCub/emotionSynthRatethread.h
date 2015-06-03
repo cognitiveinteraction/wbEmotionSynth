@@ -18,18 +18,18 @@
 */
 
 /**
- * @file gazetrackRatethread.h
+ * @file emotionSynthRatethread.h
  * @brief Definition of a thread that receives input images and determines the counterpart`s gazing
  */
 
 
-#ifndef _GAZE_TRACK_RATETHREAD_H_
-#define _GAZE_TRACK_RATETHREAD_H_
+#ifndef _EMOTION_SYNTH_RATETHREAD_H_
+#define _EMOTION_SYNTH_RATETHREAD_H_
 
 #include <yarp/sig/all.h>
 #include <yarp/os/all.h>
 #include <yarp/dev/all.h>
-#include <yarp/os/Thread.h>
+#include <yarp/os/RateThread.h>
 #include <yarp/os/Log.h>
 #include <iostream>
 #include <fstream>
@@ -37,67 +37,10 @@
 #include <opencv2/opencv.hpp>
 #include <cstring>
 
-#include <dlib/image_processing/frontal_face_detector.h>
-#include <dlib/image_processing/render_face_detections.h>
-#include <dlib/image_processing.h>
-#include <dlib/gui_widgets.h>
-#include <dlib/image_io.h>
-#include <dlib/opencv.h>
 
-// ***** countFps class ***********
 
-class CountFps
-{
-public:
-    CountFps();
-    ~CountFps();
-    void Init();
-    char* getFps();
-    void showFps(cv::Mat frame);
-private:
-    double FPS;
-    double FPS_sum;
-    int FPS_count;
-    long prevTick;
-    int count;
-    char str[256];
-    std::string stri;
-};
 
-// ***** eyeTracker class ***********
-
-class eyeTracker
-{
-public:
-    eyeTracker();
-    ~eyeTracker();
-    int Init();
-    void loadShapePredictor(std::string inval);
-    void getFrontalFaceDetector();
-    void findFaceDlib(dlib::cv_image<dlib::bgr_pixel> frame);
-    std::vector<dlib::full_object_detection> findFaceFeatures(dlib::cv_image<dlib::bgr_pixel> frame);
-	void drawEyeBoxes(cv::Mat& image, double &a, double &b, double &angle);
-private:
-	double headAzim_, headElev_;
-    dlib::shape_predictor sp_;
-    dlib::frontal_face_detector detector_;
-    std::vector<dlib::rectangle> dets_;
-
-	int eyeLeftXmin, eyeLeftXmax, eyeRightXmin, eyeRightXmax;
-	int eyeLeftYmin, eyeLeftYmax, eyeRightYmin, eyeRightYmax;
-	int noseTopX_, noseTopY_, noseBotX_, noseBotY_;
-	double noseAngle_;
-	double sumleft_, sumright_, sumcount_;
-	cv::Point eyeLeftCornerOut_, eyeLeftCornerIn_, eyeRightCornerOut_, eyeRightCornerIn_;
-	std::vector<cv::Point> leftEyePoints;
-	std::vector<cv::Point> rightEyePoints;
-	cv::Point getBetterCentroid(cv::Mat image);
-	cv::Point getCentroid(cv::Mat image);
-};
-
-// ***** gazeTrackRatethread class ***********
-
-class gazeTrackRatethread : public yarp::os::Thread {
+class emotionSynthRatethread : public yarp::os::RateThread {
 private:
     bool result;                    //result of the processing
 
@@ -112,26 +55,23 @@ private:
     yarp::os::BufferedPort<yarp::sig::ImageOf<yarp::sig::PixelRgb> > inputPort;
     yarp::os::BufferedPort<yarp::sig::ImageOf<yarp::sig::PixelBgr> > outputPort;     // output port to plot event
     yarp::os::BufferedPort<yarp::sig::Vector> inputPortClm;     
-    std::string name;                                                                // rootname of all the ports opened by this thread
-    CountFps cFps;
-    eyeTracker *et;
-    dlib::image_window win;
+    std::string name;                                                                // rootname of all the ports opened by this thread;
 public:
     /**
     * constructor default
     */
-    gazeTrackRatethread();
+    emotionSynthRatethread();
 
     /**
     * constructor 
     * @param robotname name of the robot
     */
-    gazeTrackRatethread(std::string robotname,std::string configFile);
+    emotionSynthRatethread(std::string robotname,std::string configFile);
 
     /**
      * destructor
      */
-    ~gazeTrackRatethread();
+    ~emotionSynthRatethread();
 
     /**
     *  initialises the thread
@@ -165,11 +105,6 @@ public:
     * function that sets the inputPort name
     */
     void setInputPortName(std::string inpPrtName);
-
-    /**
-     * function in charge of correctly closing the thread
-     */
-    void onStop();
 
     /**
      * method for the processing in the ratethread
